@@ -117,5 +117,5 @@ bogitech-website/
 
 **BogiTech Solutions** — *Building Scalable Software & Robust IT Infrastructure.*
 
-- **Telegram:** [@BogiTech Solutions](https://t.me/BogiTech)
-- **Website:** [bogitechsolution@gmail.com](https://bogitech.com)
+- **Telegram:** [@bogitechsolution](https://t.me/bogitechsolution)
+- **Website:** [https://bogi-tech-solutions.vercel.app/](https://bogi-tech-solutions.vercel.app/)
