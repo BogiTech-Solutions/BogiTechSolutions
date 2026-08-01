@@ -246,7 +246,9 @@ export default function Home() {
           
           <div className="inline-flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-200">
             <Mail className="w-5 h-5 text-[#00E6CC]" />
-            <span className="font-mono text-sm">contact@bogitech.com</span>
+            <Link href="mailto:bogitechsolution@gmail.com" className="text-slate-200 hover:text-[#00E6CC]">
+              <span className="font-mono text-sm">bogitechsolution@gmail.com</span>
+            </Link>
           </div>
         </div>
       </section>
