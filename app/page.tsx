@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Cloud, Server, Code2, Shield, ArrowRight, Mail } from 'lucide-react';
+import { sendGAEvent } from '@next/third-parties/google';
 
 // Types for your services and projects
 interface ServiceItem {
@@ -57,9 +58,24 @@ const PROJECTS: ProjectItem[] = [
 ];
 
 export default function Home() {
+  // Track when a prospective client clicks "Get A Quote" or "Start A Project"
+  const handleQuoteClick = (serviceName: string) => {
+    sendGAEvent('event', 'generate_lead', {
+      event_category: 'Lead Generation',
+      event_label: serviceName, // e.g., 'Web Development', 'Mobile Apps'
+    });
+  };
+
+  // Track direct email clicks or contact form submissions
+  const handleContactSubmit = () => {
+    sendGAEvent('event', 'submit_contact_form', {
+      event_category: 'Conversion',
+      event_label: 'BogiTech Solutions Main Contact Form',
+    });
+  };
   return (
     <main className="min-h-screen bg-[#050810] text-slate-100 font-sans selection:bg-[#00E6CC] selection:text-black">
-      
+
       {/* 1. Header / Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#050810]/80 backdrop-blur-md border-b border-slate-800/60">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -80,8 +96,9 @@ export default function Home() {
             <a href="#contact" className="hover:text-[#00E6CC] transition-colors">Contact</a>
           </nav>
 
-          <a 
-            href="#contact" 
+          <a
+            href="#contact"
+            onClick={() => handleQuoteClick('General Project Inquiry')}
             className="px-5 py-2.5 rounded-md text-xs uppercase tracking-wider font-bold bg-[#00E6CC] text-[#050810] hover:bg-[#00c2ac] hover:shadow-[0_0_20px_rgba(0,230,204,0.4)] transition-all"
           >
             Get Started
@@ -95,14 +112,14 @@ export default function Home() {
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-[#00E6CC]/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-12">
-          
+
           {/* Left Column: Brand Statement */}
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00E6CC]/10 border border-[#00E6CC]/30 text-[#00E6CC] text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-[#00E6CC] animate-pulse" />
               Software & Infrastructure Engineering
             </div>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
               Building <span className="text-transparent bg-clip-text bg-linear-to-r from-[#00E6CC] to-teal-400">Scalable Software</span> & Robust IT Infrastructure.
             </h1>
@@ -112,15 +129,17 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-4">
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-[#00E6CC] text-[#050810] font-bold text-sm shadow-[0_0_15px_rgba(0,230,204,0.3)] hover:shadow-[0_0_25px_rgba(0,230,204,0.5)] transition-all"
+                onClick={() => handleContactSubmit()}
               >
                 Schedule Consultation <ArrowRight className="w-4 h-4" />
               </a>
-              <a 
-                href="#portfolio" 
+              <a
+                href="#portfolio"
                 className="px-6 py-3.5 rounded-lg border border-slate-700 bg-slate-900/50 text-slate-300 font-bold text-sm hover:border-slate-500 hover:text-white transition-all"
+                onClick={() => handleQuoteClick('View Portfolio')}
               >
                 View Case Studies
               </a>
@@ -181,8 +200,8 @@ export default function Home() {
             {SERVICES.map((service) => {
               const Icon = service.icon;
               return (
-                <div 
-                  key={service.id} 
+                <div
+                  key={service.id}
                   className="p-8 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-[#00E6CC]/50 transition-all group"
                 >
                   <div className="w-12 h-12 rounded-lg bg-[#00E6CC]/10 text-[#00E6CC] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -190,7 +209,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-6">{service.description}</p>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {service.tags.map((tag) => (
                       <span key={tag} className="px-3 py-1 rounded-md bg-slate-800/60 text-slate-300 text-xs font-mono">
@@ -221,7 +240,7 @@ export default function Home() {
                   <h3 className="text-xl font-bold text-white mt-1 mb-3">{project.title}</h3>
                   <p className="text-slate-400 text-sm mb-6">{project.description}</p>
                 </div>
-                
+
                 <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
                   <span className="text-xs font-mono text-[#00E6CC]">{project.metrics}</span>
                   <div className="flex gap-2">
@@ -243,10 +262,13 @@ export default function Home() {
           <p className="text-slate-400 max-w-xl mx-auto">
             Whether you are launching a new product or modernizing legacy backend systems, BogiTech delivers high-performance solutions.
           </p>
-          
+
           <div className="inline-flex items-center gap-3 p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-200">
             <Mail className="w-5 h-5 text-[#00E6CC]" />
-            <Link href="mailto:bogitechsolution@gmail.com" className="text-slate-200 hover:text-[#00E6CC]">
+            <Link
+              href="mailto:bogitechsolution@gmail.com"
+              onClick={handleContactSubmit}
+              className="text-slate-200 hover:text-[#00E6CC]">
               <span className="font-mono text-sm">bogitechsolution@gmail.com</span>
             </Link>
           </div>
