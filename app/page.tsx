@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { Cloud, Server, Code2, Shield, ArrowRight, Mail } from 'lucide-react';
